@@ -20,8 +20,10 @@ class SQLQueryEngine :
 
         self.llm = Ollama(model = 'mistral-small3.1:latest',
                     base_url=self.ollama_url,
-                    request_timeout = 120
+                    request_timeout = 300
                     )
+
+        
         self.dbname = os.getenv("DB_NAME")
         self.dbhost = os.getenv("DB_HOST")
         self.dbuser = os.getenv("DB_USER")
@@ -54,7 +56,7 @@ class SQLQueryEngine :
                 "client_id (clé étrangère liée à clients.client_id), montant_ht (numérique), "
                 "statut ('PAYEE', 'EN_RETARD', 'EN_ATTENTE'), date_emission (DATE), "
                 "retard_jours (entier, nombre de jours de retard si statut='EN_RETARD'). "
-                "Pour calculer les impayés, filtrer sur statut = 'EN_RETARD'."
+                "Pour calculer les impayés, filtrer sur statut = 'EN_RETARD' ; 'EN_ATTENTE' pour les factures en attente."
             ),
             "incidents": (
                 "Table des tickets d'incidents techniques / SLA. Colonnes : incident_id, "
@@ -80,7 +82,7 @@ class SQLQueryEngine :
 
 if __name__ =="__main__":
     sql_query_eng = SQLQueryEngine()
-    query_str="Quelles sont les informations du client avec le plus gros nombre de factures ?"
+    query_str="Avons nous des paiements en attente auprès du client CLT-006 ?"
     print(sql_query_eng.run(query_str))
 
     

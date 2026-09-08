@@ -3,5 +3,7 @@ psycopg2-binary
 dotenv
 llama-index==0.12.45
 llama-index-llms-ollama
+llama_index-embeddings-ollama
+llama-index-vector-stores-postgres
 sqlalchemy
 mlflow
