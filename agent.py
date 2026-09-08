@@ -43,11 +43,32 @@ class SQLQueryEngine :
 
     def create_query_engine(self):
         engine = create_engine(self.db_url)
-        sql_db = SQLDatabase(engine, include_tables= ['clients','factures','incidents'])
+        custom_table_info = {
+            "clients": (
+                "Table des entreprises clientes. Colonnes principales : "
+                "client_id (clé primaire, format 'CLT-XXX'), nom (raison sociale), "
+                "secteur d'activité, date_signature."
+            ),
+            "factures": (
+                "Table financière des factures. Colonnes : facture_id (clé primaire), "
+                "client_id (clé étrangère liée à clients.client_id), montant_ht (numérique), "
+                "statut ('PAYEE', 'EN_RETARD', 'EN_ATTENTE'), date_emission (DATE), "
+                "retard_jours (entier, nombre de jours de retard si statut='EN_RETARD'). "
+                "Pour calculer les impayés, filtrer sur statut = 'EN_RETARD'."
+            ),
+            "incidents": (
+                "Table des tickets d'incidents techniques / SLA. Colonnes : incident_id, "
+                "client_id (clé étrangère), severite ('CRITIQUE', 'MAJEURE', 'MINEURE'), "
+                "description, date_signalement, resolu (booléen TRUE/FALSE)."
+            ),
+        }
+
+        sql_db = SQLDatabase(engine, include_tables= ['clients','factures','incidents'],custom_table_info=custom_table_info)
         self.query_engine = NLSQLTableQueryEngine(
                             sql_database=sql_db, 
                             tables =  ['clients','factures','incidents'],
-                            llm = self.llm     
+                            llm = self.llm, 
+
         )
         return self.query_engine
 
@@ -59,7 +80,7 @@ class SQLQueryEngine :
 
 if __name__ =="__main__":
     sql_query_eng = SQLQueryEngine()
-    query_str="Quelles sont les informations du client avec le plus gros montant de facture en retard?"
+    query_str="Quelles sont les informations du client avec le plus gros nombre de factures ?"
     print(sql_query_eng.run(query_str))
 
     
