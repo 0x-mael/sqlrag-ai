@@ -1,0 +1,5 @@
+myenv
+.env
+/assets/contrats
+__pycache__
+mlflow.*

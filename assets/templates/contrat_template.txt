@@ -1,0 +1,36 @@
+# CONTRAT-CADRE DE PRESTATION DE SERVICES IT & CLOUD
+**Référence Contrat :** CTR-{client_id}
+**Identifiant Client :** {client_id}
+
+---
+
+### ENTRE LES SOUSSIGNÉS :
+1. La société **CloudFlow SAS**, au capital de 50 000 €, immatriculée au RCS de Paris sous le numéro 812 345 678, sise 15 rue de la Paix, 75002 Paris, représentée par M. Thomas Dubois en qualité de Directeur Général (ci-après désignée « Le Prestataire »).
+
+2. La société **{nom_client}**, société par actions simplifiée au capital de {capital} €, sise au {adresse_client}, immatriculée sous le SIREN {siren}, représentée par **{representant}** en qualité de {poste} (ci-après désignée « Le Client »).
+
+Date d'effet : {date_effet}
+
+---
+
+### ARTICLE 1 - OBJET DU CONTRAT
+Le présent contrat définit les conditions techniques, juridiques et financières selon lesquelles le Prestataire fournit au Client un accès à sa plateforme SaaS d'analyse de données et d'hébergement managé.
+
+### ARTICLE 2 - NIVEAUX DE SERVICE (SLA) & PÉNALITÉS D'INCIDENT
+- Le Prestataire garantit une disponibilité mensuelle de la plateforme de **{sla_disponibilite}%**.
+- En cas d'incident classé **CRITIQUE** (interruption totale du service), le délai de rétablissement garanti (GTR) est de **{gtr_heures} heures**.
+- En cas de dépassement de ce délai, une pénalité forfaitaire égale à **{penalite_sla}%** du montant de la facture mensuelle sera appliquée par tranche de 2 heures de retard supplémentaires, plafonnée à 20% du montant mensuel.
+
+### ARTICLE 3 - CONDITIONS DE FACTURATION & DÉLAIS DE PAIEMENT
+- Les factures sont émises mensuellement à terme échu et payables sous un délai de **{delai_paiement} jours nets** à compter de leur date d'émission.
+- Tout retard de paiement donne lieu, de plein droit et sans mise en demeure préalable, à l'application de pénalités de retard calculées sur la base de 3 fois le taux d'intérêt légal en vigueur, ainsi qu'à une indemnité forfaitaire pour frais de recouvrement de 40 €.
+
+### ARTICLE 4 - SUSPENSION DE SERVICE & RÉSILIATION POUR DÉFAUT DE PAIEMENT
+- En cas de retard de paiement excédant **{seuil_retard_suspension} jours calendaires**, le Prestataire se réserve expressément le droit de suspendre temporairement l'accès aux API et aux interfaces du Client après notification restée sans effet sous un préavis de **{preavis_jours} jours**.
+- Si le défaut de paiement persiste au-delà de **60 jours**, le contrat pourra être résilié de plein droit aux torts exclusifs du Client, sans préjudice de tous dommages et intérêts.
+
+---
+Fait à Paris, le {date_effet}, en deux exemplaires originaux.
+
+**Pour le Prestataire :** Thomas Dubois  
+**Pour le Client ({nom_client}) :** {representant}
