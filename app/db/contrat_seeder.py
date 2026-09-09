@@ -2,7 +2,7 @@ import os
 from faker import Faker
 import random
 from dotenv import load_dotenv
-from core.db_functions import Dbconn
+from app.db.db_functions import Dbconn
 
 
 faker = Faker("fr-FR")
