@@ -9,6 +9,15 @@ services :
       - "5432:5432"
     restart: always
 
+  app:
+    build : .
+    command : gradio app/ui/interface.py
+    container_name : gradio_app
+    restart : always
+    ports :
+      - "7860:7860"    
+
+
   mlflow :
     image : ghcr.io/mlflow/mlflow:latest
     container_name : mlflow_server

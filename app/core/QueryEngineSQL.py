@@ -43,7 +43,6 @@ class SQLQueryEngine :
         
         )
         self.query_engine = None
-
         self.setup()
 
 
@@ -73,8 +72,7 @@ class SQLQueryEngine :
         self.query_engine = NLSQLTableQueryEngine(
                             sql_database=sql_db, 
                             tables =  ['clients','factures','incidents'],
-                            llm = self.llm, 
-
+                            llm = self.llm,
         )
         return self.query_engine
 
