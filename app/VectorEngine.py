@@ -1,13 +1,20 @@
 from llama_index.embeddings.ollama import OllamaEmbedding
+from llama_index.llms.ollama import Ollama
 from llama_index.core import (SimpleDirectoryReader, VectorStoreIndex, StorageContext)
 from llama_index.vector_stores.postgres import PGVectorStore
 from llama_index.core import Settings
 import os 
 from dotenv import load_dotenv
 from core.db_functions import Dbconn
+import mlflow
+
+mlflow.set_experiment("VectorEngine")
+mlflow.llama_index.autolog()
 
 
 ollama_url = os.getenv("OLLAMA_URL")
+Settings.llm = Ollama(model = "mistral-small3.1:latest",
+base_url = ollama_url)
 embed_model = OllamaEmbedding(
                         model_name = "qwen3-embedding:0.6b",
                         base_url = ollama_url

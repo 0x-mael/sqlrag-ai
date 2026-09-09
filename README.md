@@ -3,7 +3,7 @@
 
 # SQLRAG-AI
 
-**SQLRAG-AI** is an agentic system designed to query large database using **Natural Langage SQL** and Vector Store with embeddings to ground enterprise informations and help support. Built on **LlamaIndex**, local LLMs via **Ollama**, **MLflow** tracing, and an interactive **Gradio** web interface, it retrieves relevant contrat fields from a client's document and pesonal informations on the database with least-privileges to answer questions on status, invoices etc...
+**SQLRAG-AI** is an agentic system designed to query large database using **Natural Langage SQL(NLSQL)** and Vector Store with embeddings to ground enterprise informations and help support. Built on **LlamaIndex**, local LLMs via **Ollama**, **MLflow** tracing, and an interactive **Gradio** web interface, it retrieves relevant contrat fields from a client's document and pesonal informations on the database with least-privileges to answer questions on status, invoices etc...
 
 ---
 
