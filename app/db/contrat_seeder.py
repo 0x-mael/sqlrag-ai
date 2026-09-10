@@ -1,15 +1,20 @@
 import os 
 from faker import Faker
 import random
+from pathlib import Path
 from dotenv import load_dotenv
 from app.db.db_functions import Dbconn
 
 
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+TEMPLATE_PATH = BASE_DIR / "assets" / "templates" / "contrat_template.txt"
+OUTPUT_DIR = BASE_DIR / "assets" / "contrats"
+
 faker = Faker("fr-FR")
 random.seed(42)
 CONTRAT_TEMPLATE = ""
-path = "assets/templates/contrat_template.txt"
-with open(path,'rt',encoding='utf-8') as f :
+
+with open(TEMPLATE_PATH, 'rt', encoding='utf-8') as f:
     CONTRAT_TEMPLATE = f.read()
 
 
@@ -61,15 +66,14 @@ def seed_contrat(client_id:str="", nom_client:str="", date_signature:str="") -> 
 
 def make_contrat(clients):
     """Function to create and save every retrieved client contrat according to their personal data and random seed"""
-    save_path = "assets/contrats"
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     for client in clients:
-        nom_fichier = client['client_id']
-        path = os.path.join(save_path,nom_fichier)
-        path = path + ".md"
+        nom_fichier = f"{client['client_id']}.md"
+        file_path = OUTPUT_DIR / nom_fichier
         text = seed_contrat(client_id=client['client_id'], nom_client=client['nom_client'], date_signature=client['date_signature'])
-        with open(path,'wt',encoding='utf-8') as contrat:
+        with open(file_path, 'wt', encoding='utf-8') as contrat:
             contrat.write(text)
-        print(f"Contract generated for customer {nom_fichier}\n")
+        print(f"Contract generated for customer {client['client_id']}\n")
 
 
 if __name__=="__main__":
