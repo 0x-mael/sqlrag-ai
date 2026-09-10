@@ -3,6 +3,7 @@ from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.core import SQLDatabase
 from llama_index.core.query_engine import NLSQLTableQueryEngine
 from llama_index.core import Settings
+from llama_index.core.prompts import PromptTemplate
 from sqlalchemy import create_engine
 from sqlalchemy import URL
 from dotenv import load_dotenv 
@@ -13,6 +14,22 @@ import os
 load_dotenv()
 
 
+GENERAL_TEXT_TO_SQL_TMPL = """Tu es un expert SQL pour PostgreSQL. Ton unique tâche est de générer une requête SQL valide en te basant exclusivement sur le schéma fourni.
+
+DIRECTIVES GÉNÉRALES DE GÉNÉRATION SQL :
+1. STRICTE ADHÉRENCE AU SCHÉMA : N'utilise que les tables et colonnes définies dans la section "Schéma". N'invente aucune colonne ni table.
+2. JOINTURES : Identifie les clés primaires et clés étrangères indiquées dans le schéma pour lier correctement les tables avec `JOIN`.
+3. TEXTE ET CASSE : Pour les filtres sur des colonnes textuelles, prends en compte les variations de casse (utilise `ILIKE` ou `LOWER(...)` si nécessaire).
+4. AGRÉGATIONS : Lors de l'utilisation de fonctions d'agrégation (`COUNT`, `SUM`, `AVG`, `MAX`), ajoute les colonnes non agrégées dans la clause `GROUP BY`.
+5. FORMAT DE SORTIE : Renvoie UNIQUEMENT la requête SQL. Aucun commentaire, aucune explication, aucun bloc markdown (pas de ```sql).
+
+Schéma de la base de données :
+{schema}
+
+Question de l'utilisateur : {query_str}
+SQLQuery : """
+
+
 class SQLQueryEngine :
     def __init__(self):
         self.ollama_url = os.getenv("OLLAMA_URL")
@@ -20,7 +37,7 @@ class SQLQueryEngine :
         self.embed_model = os.getenv("EMBED_MODEL")
         self.llm = Ollama(model = self.model_name,
                     base_url=self.ollama_url,
-                    # request_timeout = 300
+                    request_timeout = 300.0
                     )
         Settings.embed_model = OllamaEmbedding(
                             model_name = self.embed_model,
@@ -68,11 +85,15 @@ class SQLQueryEngine :
             ),
         }
 
-        sql_db = SQLDatabase(engine, include_tables= ['clients','factures','incidents'],custom_table_info=custom_table_info)
+        text_to_sql_prompt = PromptTemplate(GENERAL_TEXT_TO_SQL_TMPL)
+
+        sql_db = SQLDatabase(engine, include_tables= ['clients','factures','incidents'])
         self.query_engine = NLSQLTableQueryEngine(
                             sql_database=sql_db, 
                             tables =  ['clients','factures','incidents'],
                             llm = self.llm,
+                            text_to_sql_prompt=text_to_sql_prompt,
+                            context_query_kwargs=custom_table_info
         )
         return self.query_engine
 

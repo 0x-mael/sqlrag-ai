@@ -19,7 +19,8 @@ class VectorQueryEngine :
         self.model_name = os.getenv("MODEL_NAME")
         self.embed_model = os.getenv("EMBED_MODEL")
         Settings.llm = Ollama(model = self.model_name,
-                            base_url = self.ollama_url)
+                            base_url = self.ollama_url,
+                            request_timeout = 300.0)
         self.embed_model = OllamaEmbedding(
                             model_name = self.embed_model,
                             base_url = self.ollama_url
@@ -52,7 +53,7 @@ class VectorQueryEngine :
             embed_model=self.embed_model,
             show_progress=True
         )
-        self.vector_engine = index.as_query_engine()
+        self.vector_engine = index.as_query_engine(similarity_top_k=4)
         return self.vector_engine
 
     def load_query_engine(self):
@@ -61,7 +62,7 @@ class VectorQueryEngine :
             vector_store=vector_store,
             embed_model=self.embed_model
         )
-        self.vector_engine = index.as_query_engine()
+        self.vector_engine = index.as_query_engine(similarity_top_k=4)
         return self.vector_engine
 
     def setup(self):
